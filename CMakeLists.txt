@@ -5,6 +5,16 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES
     Source/main.c
+
+    Source/config.h
+    Source/emulation.h
+    Source/flags.h
+    Source/lcd.c
+    Source/lcd.h
+    Source/parser.c
+    Source/parser.h
+    Source/pwm.c
+    Source/pwm.h
     Source/serial.c
     Source/serial.h
 )
