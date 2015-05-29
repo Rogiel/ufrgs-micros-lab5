@@ -8,21 +8,13 @@
 // Autores: Gustavo Dal Molin, Gustavo dos Anjos e Rogiel Sulzbach
 //
 
+
 #include <AT89X52.h>
 #include "pwm.h"
 #include "config.h"
 
 #define TIMER_COUNTER 255
-#ifdef COMPILE_FOR_8051
-#define TIMER_INTERRUPT_FLAG interrupt 1
-#else
-#define TIMER_INTERRUPT_FLAG
-#endif
-
-static unsigned int pwm;
-
-#define PWM_OUT_PORT pwm
-#define PWM_OUT_PIN 1
+#define PWM_OUT_PORT P2
 
 static unsigned int dutyCycle;
 static unsigned int dutyCycleCompleted;
@@ -36,25 +28,31 @@ void pwm_init() {
 
 	EA = 1;                       /* Global Interrupt Enable */
 	TH0 = TIMER_COUNTER / 10;	  /* Valor inicial do timer */
+	
+	PWM_OUT_PORT = 0;
+	
+	dutyCycle = 0;
 }
 
 void pwm_set_duty_cycle(unsigned int dc) {
-	dutyCycle = dc;
+	DISABLE_GLOBAL_INT();
+	dutyCycle = dc / 10;
+	ENABLE_GLOBAL_INT();
 }
 
 unsigned int pwm_get_duty_cycle() {
-	return dutyCycle;
+	return dutyCycle * 10;
 }
 
-void pwm_interrupt() TIMER_INTERRUPT_FLAG {
+void pwm_interrupt() interrupt 1 {
 	if(dutyCycleCompleted < dutyCycle) {
-		PWM_OUT_PORT |= (1 << PWM_OUT_PIN);
+		PWM_OUT_PORT = 0xFF;
 	} else {
-		PWM_OUT_PORT &= ~(1 << PWM_OUT_PIN);
+		PWM_OUT_PORT = 0;
 	}
 	dutyCycleCompleted++;
 
-	if(dutyCycleCompleted == 9) {
+	if(dutyCycleCompleted == 10) {
 		dutyCycleCompleted = 0;
 	}
 }

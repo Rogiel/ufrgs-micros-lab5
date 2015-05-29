@@ -12,7 +12,6 @@
 #define		__SERIAL__
 
 #include <AT89X52.h>
-#include <stdbool.h>
 
 #include "config.h"
 
@@ -50,6 +49,13 @@ void serial_init(SerialBaudRate baudRate);
 SerialByte serial_read_byte();
 
 /**
+ * Lê um byte da porta serial. Espera até que um byte seja recebido.
+ *
+ * @return o byte lido na porta serial
+ */
+SerialByte serial_read_byte_wait();
+
+/**
  * Verifica se a leitura na porta serial está completa
  *
  * @return true se a leitura foi completada
@@ -62,6 +68,21 @@ bool serial_read_complete();
  * @param byte o byte para ser escrito na porta
  */
 void serial_write_byte(SerialByte byte);
+
+/**
+ * Escreve um byte na porta serial. Espera até que o byte tenha sido escrito com sucesso.
+ *
+ * @param byte o byte para ser escrito na porta
+ */
+void serial_write_byte_wait(SerialByte byte);
+
+/**
+ * Escreve uma string na porta serial. Espera até que o byte tenha sido escrito com sucesso.
+ *
+ * @param str a string para ser escrita na porta
+ * @param size o tamanho da string (em bytes)
+ */
+void serial_write_string(const char* str, unsigned int size);
 
 /**
  * Verifica se a escrita na porta serial está completa

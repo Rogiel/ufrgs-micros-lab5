@@ -10,7 +10,7 @@
 
 #include "parser.h"
 
-unsigned char parse_ascii_number(unsigned char character) {
+int parse_ascii_number(unsigned char character) {
 	switch(character) {
 		case '0': return 0;
 		case '1': return 1;
@@ -23,6 +23,6 @@ unsigned char parse_ascii_number(unsigned char character) {
 		case '8': return 8;
 		case '9': return 9;
 
-		default:  return 0;
+		default:  return -1;
 	}
 }

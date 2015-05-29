@@ -1,0 +1,7 @@
+".\lcd.obj",
+".\main.obj",
+".\parser.obj",
+".\pwm.obj",
+".\serial.obj" 
+TO "Projeto" 
+RAMSIZE(256) 

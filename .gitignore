@@ -1,1 +1,11 @@
+# CLion project files
 .idea/
+
+# Keil output files
+Keil/*.obj
+Keil/*.lst
+Keil/*.uvgui.*
+Keil/*.__i
+Keil/*_uvproj.bak
+Keil/*.build_log.htm
+Keil/*.M51

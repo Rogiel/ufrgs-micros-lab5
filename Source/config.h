@@ -11,7 +11,7 @@
 #ifndef		__CONFIG__
 #define		__CONFIG__
 
-// #define BUILD_FOR_8051
+#define BUILD_FOR_8051
 
 // Macros para enable/disable da interrupÁ„o global
 /**
@@ -24,8 +24,14 @@
  */
 #define		ENABLE_GLOBAL_INT()		(IE |= (1 << 7))
 
+#define XTAL 12000000
+
 #ifndef BUILD_FOR_8051
 #include "emulation.h"
 #endif
+
+typedef unsigned char bool;
+#define true 1
+#define false 0
 
 #endif

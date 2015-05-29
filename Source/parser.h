@@ -13,6 +13,6 @@
 
 #include <AT89X52.h>
 
-unsigned char parse_ascii_number(unsigned char character);
+int parse_ascii_number(unsigned char character);
 
 #endif

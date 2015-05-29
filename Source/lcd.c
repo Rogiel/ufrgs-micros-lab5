@@ -5,7 +5,6 @@ Este arquivo contém as funções de acesso ao LCD.
 
 #include		<AT89X52.h>
 #include		"lcd.h"
-#include		"main.h"
 
 #define			LCD_DATA	P1		// porta 1 onde esta os pinos de dados do LCD
 #define			LCD_CTRL	P3		// porta 3 onde estão os bits de comando
