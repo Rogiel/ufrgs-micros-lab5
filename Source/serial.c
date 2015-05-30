@@ -40,34 +40,18 @@ SerialByte serial_read_byte() {
 }
 
 /**
- * Lê um byte da porta serial. Espera até que um byte seja recebido.
- *
- * @return o byte lido na porta serial
- */
-SerialByte serial_read_byte_wait() {
-	while(!serial_read_complete()) { /* espera até terminar a leitura */ }
-	return serial_read_byte();
-}
-
-/**
- * Verifica se a leitura na porta serial está completa
- *
- * @return true se a leitura foi completada
- */
-bool serial_read_complete() {
-	return RI;
-}
-
-/**
  * Escreve um byte na porta serial
  *
  * @param byte o byte para ser escrito na porta
  */
 void serial_write_byte(SerialByte byte) {
+	DISABLE_GLOBAL_INT();
+
 	// coloca o byte no buffer de escrita
 	SBUF = byte;
-	
-	// reseta o registrador de controle do serial
+
+	ENABLE_GLOBAL_INT();
+
 	TI = 0;
 }
 

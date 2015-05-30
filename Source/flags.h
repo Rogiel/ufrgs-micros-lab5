@@ -14,21 +14,18 @@
 /**
  * Flags de execução
  */
-extern volatile unsigned char flags_global;
+static volatile unsigned char flags_global;
 #define		FLAG_LCD					(1 << 0)
-#define		FLAG_KEY					(1 << 1)
 #define		FLAG_SERIAL_RX				(1 << 2)
 
-void set_flag(unsigned char f) {
-	DISABLE_GLOBAL_INT();
-	flags_global |= f;
+#define set_flag(f) \
+	DISABLE_GLOBAL_INT();\
+	flags_global |= f;\
 	ENABLE_GLOBAL_INT();
-}
 
-void unset_flag(unsigned char f) {
-	DISABLE_GLOBAL_INT();
-	flags_global &= ~f;
+#define unset_flag(f) \
+	DISABLE_GLOBAL_INT();\
+	flags_global &= ~f;\
 	ENABLE_GLOBAL_INT();
-}
 
 #endif

@@ -368,11 +368,6 @@
               <FilePath>..\Source\config.h</FilePath>
             </File>
             <File>
-              <FileName>emulation.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Source\emulation.h</FilePath>
-            </File>
-            <File>
               <FileName>flags.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Source\flags.h</FilePath>

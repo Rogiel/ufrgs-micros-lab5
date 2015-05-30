@@ -14,6 +14,11 @@
 #include <AT89X52.h>
 
 /**
+ * Definição do tipo do duty cycle do PWM
+ */
+typedef unsigned char DutyCycle;
+
+/**
  * Inicializa os timers do PWM
  */
 void pwm_init();
@@ -23,13 +28,13 @@ void pwm_init();
  *
  * @param dc o duty cycle do pwm
  */
-void pwm_set_duty_cycle(unsigned int dc);
+void pwm_set_duty_cycle(DutyCycle dc);
 
 /**
  * Retorna o duty cycle do pwm
  *
  * @return o duty cycle do pwm
  */
-unsigned int pwm_get_duty_cycle();
+DutyCycle pwm_get_duty_cycle();
 
 #endif

@@ -97,11 +97,12 @@ bool serial_write_complete();
  * @param ReadHandler o bloco para ser executado ao ler um byte da serial
  * @param WriteHandler o bloco para ser executado ao escrever um byte na serial
  *
- * @example SERIAL_INTERRUPT_HANDLER({ readByte = serial_read_byte(); }, { writeComplete = true; });
+ * @example SERIAL_INTERRUPT_HANDLER(readByte = serial_read_byte(), writeComplete = true);
  */
-#define SERIAL_INTERRUPT_HANDLER(ReadHandler, WriteHandler) void serial_interrupt_handler() SERIAL_INTERRUPT {\
-	if(RI) ReadHandler;\
-	if(TI) WriteHandler;\
+#define SERIAL_INTERRUPT_HANDLER(ReadHandler, WriteHandler)			\
+void serial_interrupt_handler() SERIAL_INTERRUPT {					\
+	if(RI == 1) ReadHandler;										\
+	if(TI == 0) WriteHandler;										\
 }
 
 #endif

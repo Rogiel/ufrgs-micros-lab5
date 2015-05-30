@@ -16,8 +16,8 @@
 #define TIMER_COUNTER 255
 #define PWM_OUT_PORT P2
 
-static unsigned int dutyCycle;
-static unsigned int dutyCycleCompleted;
+static DutyCycle dutyCycle;
+static DutyCycle dutyCycleCompleted;
 
 void pwm_init() {
 	// seta T0M1 e T0M0
@@ -34,13 +34,13 @@ void pwm_init() {
 	dutyCycle = 0;
 }
 
-void pwm_set_duty_cycle(unsigned int dc) {
+void pwm_set_duty_cycle(DutyCycle dc) {
 	DISABLE_GLOBAL_INT();
 	dutyCycle = dc / 10;
 	ENABLE_GLOBAL_INT();
 }
 
-unsigned int pwm_get_duty_cycle() {
+DutyCycle pwm_get_duty_cycle() {
 	return dutyCycle * 10;
 }
 
