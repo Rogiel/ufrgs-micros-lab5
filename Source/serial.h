@@ -26,14 +26,9 @@ typedef unsigned char SerialByte;
 typedef unsigned int  SerialBaudRate;
 
 /**
- * Configura condicionalmente a macro de interrupção
+ * Configura a macro de interrupção
  */
-#ifdef BUILD_FOR_8051
 #define SERIAL_INTERRUPT interrupt 4
-#else
-#define SERIAL_INTERRUPT
-#endif
-
 /**
  * Inicializa a comunicação serial
  *

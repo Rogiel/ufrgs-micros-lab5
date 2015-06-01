@@ -7,7 +7,6 @@ set(SOURCE_FILES
     Source/main.c
 
     Source/config.h
-    Source/emulation.h
     Source/flags.h
     Source/lcd.c
     Source/lcd.h

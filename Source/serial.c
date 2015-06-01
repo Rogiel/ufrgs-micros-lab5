@@ -17,15 +17,27 @@
  * @param baudRate a taxa de bits da comunicação
  */
 void serial_init(SerialBaudRate baudRate) {
-	SCON  = 0x50;                   /* SCON: mode 1, 8-bit UART, enable rcvr    */
-	TMOD |= 0x20;                   /* TMOD: timer 1, mode 2, 8-bit reload      */
-	TH1 = (unsigned char) (256 - (XTAL / (11L * 12L * baudRate))); /* TH1:  reload value for 2400 baud         */
-	TR1   = 1;                      /* TR1:  timer 1 run                        */
-	
+	unsigned int divisor = (unsigned int) (65536 - XTAL / (32L * baudRate)) - 1;
+
+	// SCON em modo 1 (SM0=0, SM1=1)
+	SM0 = 0;
+	SM1 = 1;
+
+	// ativa o recebimento
 	REN = 1;
+
+	// configura o timer 2
+	T2CON = 0x34;
+
+	// configure os bytes altos e baixos do timer 2
+	RCAP2H = (unsigned char) (divisor / 256);
+	RCAP2L = divisor - RCAP2H;
+
+	// ativa o serial
 	ES = 1;
-	
-	TI = 0; 											/* TI:   set TI to send first char of UART  */
+
+	// defaults
+	TI = 0;
 	RI = 0;
 }
 
