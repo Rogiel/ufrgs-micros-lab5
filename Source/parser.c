@@ -35,40 +35,23 @@ int parse_ascii_number(unsigned char character);
 
 // public
 bool parse_command(PWMCommand* command, SerialByte byte) {
-	// se o comando é NONE, nenhum parsing foi iniciado
-	// então, um novo processamento é iniciado
-	if(command->operation == PWM_COMMAND_OPERATION_NONE) {
-		// processa o byte de operação
-		command->operation = parse_operation(byte);
+	// processa o byte de operação
+	command->operation = parse_operation(byte);
 
-		// comandos do tipo SET possuem diretamente o número necessário
-		if(command->operation == PWM_COMMAND_OPERATION_SET) {
-			command->dutyCycle = (DutyCycle) parse_ascii_number(byte);
-
-			// parsing completo: dutycycle absoluto informado
-			return true;
-		} else if(command->operation == PWM_COMMAND_OPERATION_UNK) {
-			// se o comando é desconhecido, o parsing está completo e um erro deve ser retornado
-			return true;
-		}
-
-		// parsing ainda não completo, falta o número do duty cycle
-		return false;
-	} else {
-		// processa o número recebido
-		int parsed = parse_ascii_number(byte);
-
-		// se um número não foi recebido, retorna UNK.
-		if(parsed == -1) {
-			command->operation = PWM_COMMAND_OPERATION_UNK;
+	// comandos do tipo SET possuem diretamente o número necessário
+	if(command->operation == PWM_COMMAND_OPERATION_SET) {
+		if(byte == '*') {
+			command->dutyCycle = 10;
 		} else {
-			// seta o duty cycle do comando
-			command->dutyCycle = (DutyCycle) parsed;
+			command->dutyCycle = (DutyCycle) parse_ascii_number(byte);
 		}
-
-		// parsing completo
-		return true;
+	} else if(command->operation == PWM_COMMAND_OPERATION_ADD ||
+			  command->operation == PWM_COMMAND_OPERATION_SUBTRACT) {
+		command->dutyCycle = 1;
 	}
+
+	// parsing completo
+	return true;
 }
 
 void reset_command(PWMCommand* command) {
@@ -88,6 +71,9 @@ PWMCommandOperation parse_operation(SerialByte byte) {
 
 		// operação -
 		case '-': return PWM_COMMAND_OPERATION_SUBTRACT;
+		
+		// operação set (máximo)
+		case '*': return PWM_COMMAND_OPERATION_SET;
 
 		default:
 			// se o byte de operação é um número, a operação é

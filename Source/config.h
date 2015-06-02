@@ -25,7 +25,7 @@
 /**
  * O valor de clock do cristal
  */
-#define XTAL 12000000
+#define XTAL 11059200
 
 typedef unsigned char bool;
 #define true 1

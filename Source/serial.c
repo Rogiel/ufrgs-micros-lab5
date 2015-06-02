@@ -61,10 +61,9 @@ void serial_write_byte(SerialByte byte) {
 
 	// coloca o byte no buffer de escrita
 	SBUF = byte;
+	TI = 0;
 
 	ENABLE_GLOBAL_INT();
-
-	TI = 0;
 }
 
 /**

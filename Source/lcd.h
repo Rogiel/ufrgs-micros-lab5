@@ -1,17 +1,15 @@
 /**
 \file lcd.h
-Este arquivo contï¿½m os protï¿½tipos das funï¿½ï¿½es publicas de lcd.
+Este arquivo contém os protótipos das funções publicas de lcd.
 */
 
-#ifndef		__LCD__
-#define		__LCD__
-
-#include "config.h"
+#ifndef		__LCD_H_
+#define		__LCD_H_
 
 void lcd_init (void);
 
 /**
-* Esta funï¿½ï¿½o foi planejada para ser executada a cada 1ms (aproximadamente);
+* Esta função foi planejada para ser executada a cada 1ms (aproximadamente);
 *
 */
 void lcd_periodic (void);

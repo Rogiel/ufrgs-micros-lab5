@@ -56,11 +56,15 @@ void pwm_setup_set_duty_cycle(DutyCycle dc);
  */
 void update_display();
 
+void init_display();
+
 #define reply_ok()\
 	serial_write_string("OK\n", 3);
 
 #define reply_nok()\
 	serial_write_string("NOK\n", 4);
+
+void lcd_timer_setup();
 
 /**
  * Entry-point do processador
@@ -74,6 +78,10 @@ void main() {
 	// configuração do PWM e Serial
 	pwm_init();
 	serial_init(9600);
+	lcd_timer_setup();
+	lcd_init();
+	
+	init_display();
 
 	// loop infinito
 	while(1) {
@@ -189,30 +197,38 @@ void pwm_setup_set_duty_cycle(DutyCycle number) {
 	reply_ok();
 }
 
+void init_display() {
+	// ativa o cursor
+	lcd_put_cmd(0x0c);
+	lcd_put_cmd(0x83);
+	
+	lcd_put_string("DUTY-CYCLE   ", 15);
+
+	lcd_put_cmd(0xc6);
+	
+	// finaliza a escrita da porcentagem
+	update_display();
+	
+	// libera a flag para escrita no display
+	lcd_start_writing();
+}
+
 void update_display() {
 	DutyCycle dc;
-
-	if(lcd_busy() != 0) {
+	if(lcd_busy()) {
 		return;
 	}
-
+	
 	unset_flag(FLAG_LCD_UPDATE);
 
-	// iniciaiza a atualização do display
-	lcd_init();
-
-	// coloca uma string no display
-	lcd_put_string("   DUTY-CYCLE", 0x0D);
-
-	// ativa o cursor
-	lcd_put_cmd(0xC0);
-
-	// coloca um espaço
-	lcd_put_string(":     ", 0x06);
-
+	// desativa o cursor
+	lcd_put_cmd(0x0c);
+	lcd_put_cmd(0x83);
+	lcd_put_cmd(0xc6);
+	
 	// coloca o duty cycle no display
-	dc = pwm_get_duty_cycle();
-	if(dc == 100) {
+	dc = pwm_get_duty_cycle() / 10;
+	if(dc == 10) {
 		lcd_put_string("10", 0x02);
 	} else {
 		lcd_put_string("0", 0x01);
@@ -222,11 +238,31 @@ void update_display() {
 	// finaliza a escrita da porcentagem
 	lcd_put_string("0%", 0x02);
 
-	// desativa o cursor
-	lcd_put_cmd(0x0C);
-
 	// libera a flag para escrita no display
 	lcd_start_writing();
+}
+
+void lcd_timer_setup() {
+	// reseta os bits 4-7
+	TMOD &= 0x0F;
+
+	// configura o timer em modo 1
+	TMOD |= 0x10;
+
+	// define os valores iniciais do timer
+	TH1 = 0xD0;
+	TL1 = 0x10;
+
+	ET1=1;							/* enable timer1 interrupt */
+	EA=1;							/* enable interrupts */
+	TR1=1;							/* timer1 run */
+}
+
+void lcd_timer_interrupt() interrupt 3 {
+	set_flag(FLAG_LCD);
+	
+	TH1 = 0xD0;
+	TL1 = 0x10;
 }
 
 /**

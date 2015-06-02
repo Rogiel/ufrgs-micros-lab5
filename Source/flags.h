@@ -24,7 +24,7 @@ static volatile unsigned char flags_global;
 /**
  * Flag que indica que a tela LCD deve ser atualizada
  */
-#define		FLAG_LCD_UPDATE				(1 << 0)
+#define		FLAG_LCD_UPDATE				(1 << 1)
 
 /**
  * Flag que indica que um byte foi recebido na entrada serial
