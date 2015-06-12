@@ -261,8 +261,10 @@ void lcd_timer_setup() {
 }
 
 void lcd_timer_interrupt() interrupt 3 {
+	// seta a flag de atualização do lcd
 	set_flag(FLAG_LCD);
-	
+
+	// reload do timer
 	TH1 = 0xD0;
 	TL1 = 0x10;
 }

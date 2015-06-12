@@ -15,7 +15,6 @@
 #include "pwm.h"
 #include "config.h"
 
-#define TIMER_COUNTER 255
 #define PWM_OUT_PORT P2
 
 static DutyCycle dutyCycle;
@@ -30,10 +29,10 @@ void pwm_init() {
 
 	EA = 1;                       /* Global Interrupt Enable */
 	//TH0 = TIMER_COUNTER / 10;	  /* Valor inicial do timer */
-	
+
 	TH0 = 0xFF;
 	TL0 = 0;
-	
+
 	PWM_OUT_PORT = 0;
 	dutyCycle = 0;
 }
